@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 
 import * as todoActions from './actions/todos';
 
+import './styles.css';
+
 class TodoList extends Component {
   constructor(props) {
     super(props);
@@ -25,9 +27,9 @@ class TodoList extends Component {
     return (
       <div>
         <ul>
-          { this.props.todos.map(todo => (
+          {this.props.todos.map((todo) => (
             <li key={todo.id}>{todo.text}</li>
-          )) }
+          ))}
         </ul>
 
         <input
@@ -41,18 +43,11 @@ class TodoList extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   todos: state.todos,
 });
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(todoActions, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
-
-
-
-
-
-
-
