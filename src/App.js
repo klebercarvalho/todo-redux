@@ -12,7 +12,7 @@ class App extends Component {
       <Provider store={store}>
         <div>
           <TodoList />
-        <Counter />
+          <Counter />
         </div>
       </Provider>
     );
