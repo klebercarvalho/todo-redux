@@ -1,44 +1,42 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
-import * as todoActions from './actions/todos';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as TodoActions from './store/actions/todos';
 
 import './styles.css';
 
 class TodoList extends Component {
-  constructor(props) {
-    super(props);
+  handleSubmit = (e) => {
+    e.preventDefault();
 
-    console.log(props);
-  }
+    this.props.addTodo(this.input.value);
 
-  state = {
-    newTodoText: '',
-  };
-
-  addNewTodo = () => {
-    this.props.addTodo(this.state.newTodoText);
-
-    this.setState({ newTodoText: '' });
+    this.input.value = '';
   };
 
   render() {
+    const { todos, toggleTodo, removeTodo } = this.props;
+
     return (
-      <div>
+      <section>
+        <form onSubmit={this.handleSubmit}>
+          <input ref={(el) => (this.input = el)} />
+          <button type="submit">Novo</button>
+        </form>
+
         <ul>
-          {this.props.todos.map((todo) => (
-            <li key={todo.id}>{todo.text}</li>
+          {todos.map((todo) => (
+            <li key={todo.id}>
+              {todo.complete ? <s>{todo.text}</s> : todo.text}
+              <div>
+                <button onClick={() => toggleTodo(todo.id)}>Toggle</button>
+                <button onClick={() => removeTodo(todo.id)}>Remove</button>
+              </div>
+            </li>
           ))}
         </ul>
-
-        <input
-          type="text"
-          value={this.state.newTodoText}
-          onChange={(e) => this.setState({ newTodoText: e.target.value })}
-        />
-        <button onClick={this.addNewTodo}>Novo todo</button>
-      </div>
+      </section>
     );
   }
 }
@@ -48,6 +46,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(todoActions, dispatch);
+  bindActionCreators(TodoActions, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
